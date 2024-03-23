@@ -1,4 +1,50 @@
-// Ambil elemen navbar
+
+const text = "BAYU PURNAMA AJI";
+const charactersArray = text.split('');
+
+console.log(charactersArray);
+
+document.addEventListener("DOMContentLoaded", function() {
+    const navbarLinks = document.querySelectorAll(".navbar-nav .nav-link");
+    const navbar = document.querySelector(".navbar");
+
+    // Tambahkan event listener untuk setiap link pada navbar
+    navbarLinks.forEach(function(navLink) {
+        navLink.addEventListener("click", function() {
+            navbarLinks.forEach(function(link) {
+                link.classList.remove("active");
+            });
+            this.classList.add("active");
+        });
+    });
+
+    // Tambahkan event listener untuk mendeteksi saat halaman digulir
+    window.addEventListener("scroll", function() {
+        const scrollPosition = window.scrollY;
+        const sections = document.querySelectorAll("section");
+        
+        sections.forEach(function(section) {
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.clientHeight;
+            
+            if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                navbarLinks.forEach(function(link) {
+                    link.classList.remove("active");
+                });
+                const sectionId = section.getAttribute("id");
+                document.querySelector(`.navbar-nav .nav-link[href="#${sectionId}"]`).classList.add("active");
+            }
+        });
+
+        // Tambahkan kelas 'scrolled' pada navbar saat digulir ke bawah
+        if (scrollPosition > 50) { 
+            navbar.classList.add("scrolled");
+        } else {
+            navbar.classList.remove("scrolled");
+        }
+    });
+});
+
 var navbar = document.querySelector('.navbar');
 
 // Fungsi untuk menambahkan atau menghapus kelas 'sticky' sesuai dengan posisi scroll
@@ -18,22 +64,16 @@ document.addEventListener('DOMContentLoaded', function() {
   const themeToggle = document.getElementById('theme-toggle');
   const isDarkMode = localStorage.getItem('isDarkMode');
 
-  // Fungsi untuk mengubah tema saat tombol ditekan
-  // Fungsi untuk mengubah tema
   function toggleTheme() {
     // Periksa apakah tema saat ini adalah dark mode
     var isDarkMode = document.body.classList.contains('dark-mode');
     
     // Ubah tema berdasarkan status saat ini
     if (isDarkMode) {
-        // Jika dark mode aktif, matikan dark mode
         document.body.classList.remove('dark-mode');
-        // Ubah ikon menjadi ikon untuk dark mode
         document.getElementById('theme-toggle').innerHTML = '<i class="fas fa-moon"></i>';
     } else {
-        // Jika dark mode tidak aktif, aktifkan dark mode
         document.body.classList.add('dark-mode');
-        // Ubah ikon menjadi ikon untuk light mode
         document.getElementById('theme-toggle').innerHTML = '<i class="fas fa-sun"></i>';
     }
 }
@@ -57,7 +97,6 @@ document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
       setTimeout(typeText, 100);
   }
 
-  // Mulai animasi
   typeText();
 
   // Fungsi untuk menyesuaikan posisi gambar dan teks
@@ -68,12 +107,10 @@ document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
       teks.style.marginBottom = "10px";
   }
 
-  // Inisialisasi carousel
   $('.carousel').carousel({
       interval: 5000
   });
 
-  // Tambahkan event listener untuk ikon menu
   const menuIcon = document.getElementById('box-menu');
   const navbar = document.querySelector('.navbar');
   const scrollToTopButton = document.getElementById('scroll-to-top');
@@ -101,6 +138,7 @@ document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
   }
 
   // Tambahkan class "active" pada link navbar saat di-scroll
+  const sections = document.querySelectorAll("section");
   const navLinks = document.querySelectorAll("header nav a");
   window.addEventListener('scroll', function() {
       sections.forEach((sec) => {
@@ -120,16 +158,13 @@ document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
           }
       });
 
-      // Atur class "sticky" pada header saat di-scroll
       const header = document.querySelector("header");
       header.classList.toggle("sticky", window.scrollY > 100);
 
-      // Sembunyikan ikon dan navbar saat link scroll ditekan
-      menuIcon.classList.remove("bx-x");
+    //   menuIcon.classList.remove("bx-x");
       navbar.classList.remove("active");
   });
 
-  // Tambahkan efek "scroll reveal"
   const scrollRevealElements = document.querySelectorAll(".scroll-reveal");
 
   function revealElements() {
@@ -165,17 +200,17 @@ document.addEventListener('DOMContentLoaded', function() {
       name: {
           element: nameInput,
           label: "Silakan masukkan nama anda",
-          style: "color: black; font-weight: 300;" // Gaya teks hitam tipis
+          style: "color: black; font-weight: 300;"
       },
       email: {
           element: emailInput,
           label: "Silakan masukkan alamat email anda",
-          style: "color: black; font-weight: 300;" // Gaya teks hitam tipis
+          style: "color: black; font-weight: 300;"
       },
       message: {
           element: messageInput,
           label: "Silakan masukkan pesan anda",
-          style: "color: black; font-weight: 300;" // Gaya teks hitam tipis
+          style: "color: black; font-weight: 300;"
       }
   };
 
@@ -197,62 +232,58 @@ document.addEventListener('DOMContentLoaded', function() {
   const messageInput = document.getElementById('message');
   const successAlert = document.getElementById('successAlert');
 
-  // Buat array untuk menampung data inputan
-  let formData = [];
-
   // Tambahkan event listener untuk form submit
   contactForm.addEventListener('submit', function(event) {
-      event.preventDefault(); // Hindari form submit default
+      event.preventDefault();
 
-      // Dapatkan nilai dari setiap input
       const nameValue = nameInput.value;
       const emailValue = emailInput.value;
       const messageValue = messageInput.value;
 
-      // Buat objek yang berisi data inputan
       const formDataItem = {
           name: nameValue,
           email: emailValue,
           message: messageValue
       };
 
-      // Tambahkan objek ke dalam array formData
       formData.push(formDataItem);
 
-      // Reset form setelah data ditambahkan
       contactForm.reset();
 
-      // Tampilkan pesan sukses
       successAlert.classList.remove('d-none');
       setTimeout(function() {
           successAlert.classList.add('d-none');
       }, 5000);
 
-      // Cetak data input ke konsol
       console.log(formData);
   });
 });
 
-$(document).ready(function(){
-    $('#contactForm').submit(function(event){
-        event.preventDefault(); // Mencegah pengiriman formulir default
-  
-        // Lakukan pengiriman AJAX untuk mengirim data formulir
-        $.ajax({
-            url: 'https://example.com/submit', // Ganti dengan URL endpoint yang sesuai
-            type: 'POST', // Metode HTTP yang digunakan untuk permintaan
-            data: $(this).serialize(), // Serialize data formulir
-            success: function(response){ // Fungsi callback untuk menangani permintaan AJAX yang berhasil
-                // Tampilkan pesan sukses
-                $('#successAlert').removeClass('d-none');
-                // Reset formulir
-                $('#contactForm')[0].reset();
-                // Sembunyikan pesan sukses setelah 5 detik
-                setTimeout(function(){
-                    $('#successAlert').addClass('d-none');
-                }, 5000);
-            }
-        });
-    });
-  });
-  
+document.addEventListener("DOMContentLoaded", function() {
+    const contactForm = document.getElementById("contactForm");
+
+    const handleSubmit = function(event) {
+        event.preventDefault();
+
+        const name = document.getElementById("name").value;
+        const email = document.getElementById("email").value;
+        const message = document.getElementById("message").value;
+
+        const data = {
+            name: name,
+            email: email,
+            message: message
+        };
+        localStorage.setItem("contactData", JSON.stringify(data));
+
+        const successAlert = document.getElementById("successAlert");
+        successAlert.classList.remove("d-none");
+
+        contactForm.reset();
+    };
+
+    contactForm.addEventListener("submit", handleSubmit);
+});
+
+
+
